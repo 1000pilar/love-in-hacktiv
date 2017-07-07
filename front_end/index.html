@@ -4,23 +4,21 @@
     <meta charset="utf-8">
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
     <script src="https://unpkg.com/vue@2.3.4"></script>
   </head>
   <body>
-    <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
-    </fb:login-button>
-
-    <button type="button" name="button" onclick="getAllFriends()">test</button>
-    <button type="submit" name="button" onclick="logoutdarifacebook()">Logout</button>
-
-    <div id="status">
     <div id="app">
       <love-headers></love-headers>
-    </div>
+      <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
+      </fb:login-button>
+
+      <button type="button" name="button" onclick="getAllFriends()">test</button>
+      <button type="submit" name="button" onclick="logoutdarifacebook()">Logout</button>
+      </div>
+      <script src="components.js"></script>
     <script src="app.js"></script>
-    <script src="components.js"></script>
     <script>
       function statusChangeCallback(response) {
         console.log('statusChangeCallback');
@@ -42,7 +40,7 @@
       window.fbAsyncInit = function() {
       FB.init({
         appId      : '233433567168595',
-        cookie     : true,  // enable cookies to allow the server to access 
+        cookie     : true,  // enable cookies to allow the server to access
                             // the session
         xfbml      : true,  // parse social plugins on this page
         version    : 'v2.9' // use graph api version 2.8
@@ -69,9 +67,9 @@
             'Thanks for logging in, ' + response.name + '!';
         });
       }
-      
+
       function getAllFriends(){
-        //ini get Friends nya 
+        //ini get Friends nya
         FB.api(
           '/me/friends',
           'GET',
@@ -81,7 +79,7 @@
           }
         );
       }
-      
+
       function logoutdarifacebook(){
         FB.logout(function(response) {
           // user is now logged out
