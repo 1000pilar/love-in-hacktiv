@@ -83,11 +83,24 @@ Vue.component('love-headers', {
   }
 })
 
-Vue.component('side-bar-footers', {
+Vue.component('side-bar', {
   props: [''],
   template: `
+  <div>
+    <p>
+    <b-btn v-b-toggle.collapse1 variant="primary">Toggle Collapse</b-btn>
+    </p>
 
-  `,
+    <b-collapse id="collapse1">
+    <b-card>
+        Collapse contents Here
+        <b-btn v-b-toggle.collapse2 size="sm">Toggle Inner Collapse</b-btn>
+        <b-collapse id=collapse2 class="mt-2">
+        <b-card>Hello!</b-card>
+        </b-collapse>
+    </b-card>
+    </b-collapse>
+  </div>`,
   methods: {
     handleSelect(key, keyPath) {
         console.log(key, keyPath);
