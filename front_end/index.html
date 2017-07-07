@@ -1,22 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap@next/dist/css/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.css"/>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://unpkg.com/vue@2.3.4"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
     <div id="app">
-      <love-headers></love-headers>
-      <side-bar></side-bar>
-      <fb:login-button scope="public_profile,email,user_friends" onlogin="checkLoginState();">
-      </fb:login-button>
+      <div class="container">
+        <love-headers></love-headers>
+        <div class="row">
+          <div class="col s6">
+            <div class="input-field col s6">
+              <input type="text" placeholder="Your name" v-model="lover_name">
+              <label for="onename">Name</label>
+            </div>
+            <div class="input-field col s6">
+              <select class="browser-default" v-model="love_name">
+                <option value="" disabled selected>Choose your Love</option>
+                <option v-for="friend in friendList">{{friend.name}}</option>
+              </select>
+            </div>
+          </div>
 
-      <button type="button" name="button" onclick="getAllFriends()">test</button>
-      <button type="submit" name="button" onclick="logoutdarifacebook()">Logout</button>
+          <div class="col s6">
+            <side-bar :loves="histories"></side-bar>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s1">
+
+          </div>
+          <div class="col s3">
+              <a class="waves-effect waves-light btn">Find Your Love</a>
+          </div>
+          <a class="waves-effect waves-light btn" v-if="!isLogin" @click="loginFB"><i class="fa fa-facebook-official" aria-hidden="true"></i>  Login</a>
+          <a class="waves-effect waves-light btn" v-if="isLogin" @click="logoutdarifacebook">Logout</a>
+        </div>
+
+      </div>
+      <love-result :result="results">
+      </love-result>
+
       </div>
       <script src="//unpkg.com/babel-polyfill@latest/dist/polyfill.min.js"></script>
       <script src="//unpkg.com/tether@latest/dist/js/tether.min.js"></script>
@@ -28,10 +60,8 @@
         console.log('statusChangeCallback');
         console.log(response);
         if (response.status === 'connected') {
+          app.isLogin = true
           testAPI();
-        } else {
-          document.getElementById('status').innerHTML = 'Please log ' +
-            'into this app.';
         }
       }
 
@@ -67,30 +97,12 @@
         console.log('Welcome!  Fetching your information.... ');
         FB.api('/me?fields=name', function(response) {
           console.log('Successful login for: ' + response.name);
-          document.getElementById('status').innerHTML =
-            'Thanks for logging in, ' + response.name + '!';
+          console.log(response);
+          window.localStorage.setItem('name', response.name)
+          window.localStorage.setItem('id', response.id)
         });
       }
 
-      function getAllFriends(){
-        //ini get Friends nya
-        FB.api(
-          '/me/friends',
-          'GET',
-          {"fields":"gender,name,relationship_status"},
-          function(response) {
-          console.log(response);
-          }
-        );
-      }
-
-      function logoutdarifacebook(){
-        FB.logout(function(response) {
-          // user is now logged out
-          console.log(response);
-          window.location.reload();
-        })
-      }
     </script>
   </body>
 </html>
